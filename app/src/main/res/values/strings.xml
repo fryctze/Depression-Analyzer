@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Depression Analyzer</string>
 
+    <!-- Login Activuty -->
+    <string name="btn_login_google">Sign in with Google</string>
+
     <!-- Content Description -->
     <string name="cd_logo">Logo of Depression Analyzer</string>
 </resources>
