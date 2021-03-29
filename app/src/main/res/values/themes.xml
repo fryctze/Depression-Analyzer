@@ -14,6 +14,8 @@
         <!-- Customize your theme here. -->
         <!-- Status bar stuff. -->
         <item name="android:windowLightStatusBar">true</item>
+        <item name="actionMenuTextColor">@color/black</item>
+    </style>
 
     <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
