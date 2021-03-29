@@ -2,9 +2,12 @@ package dsc.machung.depressionanalyzer.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,7 +17,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import dsc.machung.depressionanalyzer.R;
 import dsc.machung.depressionanalyzer.databinding.ActivityMainBinding;
+import dsc.machung.depressionanalyzer.utils.GlideApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +44,61 @@ public class MainActivity extends AppCompatActivity {
                 signOut();
             }
         });
+
+        String title = "Hello "+ firebaseAuth.getCurrentUser().getDisplayName() +",";
+
+        setSupportActionBar(binding.mainToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        binding.mainToolbarTitle.setText(title);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_profile);
+        View view = menuItem.getActionView();
+
+        CircleImageView circleProfileImage = view.findViewById(R.id.circle_image_menu_profile);
+
+        GlideApp.with(this)
+                .load(firebaseAuth.getCurrentUser().getPhotoUrl())
+                .into(circleProfileImage);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(v);
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_about:
+                Toast.makeText(this, "About clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_logout:
+                Toast.makeText(this, "logout clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+    private void showPopup(View view){
+        PopupMenu popup = new PopupMenu(this, view);
+        popup.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        popup.inflate(R.menu.main_menu_detail);
+        popup.show();
     }
 
     private void signOut() {
